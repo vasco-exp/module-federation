@@ -1,0 +1,38 @@
+<h1>Proyecto Padre</h1>
+
+<div>
+  <ul>
+    <li>
+      <a mat-button [routerLink]="'/'"> Home </a>
+    </li>
+
+    <div *ngIf="session?.isActive">
+      <li *ngFor="let remote of remotesConfig">
+        <a [routerLink]="remote.path">{{ remote.displayName }}</a>
+      </li>
+    </div>
+  </ul>
+</div>
+
+<div>
+  <button mat-button (click)="click()">
+    <ng-container *ngIf="session?.isActive; else logIn">
+      Cerrar sesión
+    </ng-container>
+    <ng-template #logIn> Loguearse </ng-template>
+  </button>
+</div>
+
+<main>
+  <h2>
+    <ng-container *ngIf="session?.isActive; else loggedOut">
+      <span>Sesión: activa</span>
+    </ng-container>
+
+    <ng-template #loggedOut>
+      <span>Sesión: inactiva</span>
+    </ng-template>
+  </h2>
+
+  <router-outlet></router-outlet>
+</main>

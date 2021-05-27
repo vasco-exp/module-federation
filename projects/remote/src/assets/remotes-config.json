@@ -1,0 +1,19 @@
+{
+  "remoteName": "admin",
+  "remoteEntryProd": "https://remote-vasco.vercel.app/remoteEntry.js",
+  "remoteEntryDev": "http://localhost:3000/remoteEntry.js",
+  "exposes": [
+    {
+      "exposedModule": "./Dashboard",
+      "path": "dashboardOne",
+      "displayName": "Dashboard del proyecto 1",
+      "ngModuleName": "DashboardModule"
+    },
+    {
+      "exposedModule": "./Users",
+      "path": "users",
+      "displayName": "Usuarios del proyecto 1",
+      "ngModuleName": "UsersModule"
+    }
+  ]
+}

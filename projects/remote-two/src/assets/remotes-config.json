@@ -1,0 +1,19 @@
+{
+  "remoteName": "remoteTwo",
+  "remoteEntryProd": "https://remote-two-vasco.vercel.app/remoteEntry.js",
+  "remoteEntryDev": "http://localhost:8000/remoteEntry.js",
+  "exposes": [
+    {
+      "exposedModule": "./DashboardTwo",
+      "path": "dashboardTwo",
+      "displayName": "Dashboard del proyecto 2",
+      "ngModuleName": "DashboardTwoModule"
+    },
+    {
+      "exposedModule": "./Customers",
+      "path": "customers",
+      "displayName": "Clientes del proyecto 2",
+      "ngModuleName": "CustomersModule"
+    }
+  ]
+}
