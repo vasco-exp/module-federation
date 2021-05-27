@@ -24,10 +24,15 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/shell/src/favicon.ico",
-              "projects/shell/src/assets"
+              "projects/shell/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/shared-lib/src/assets",
+                "output": "/assets/"
+              }
             ],
             "styles": ["projects/shell/src/styles.scss"],
-            "scripts": [],
+            "scripts": ["projects/shell/src/assets/remotes-config-url.js"],
             "extraWebpackConfig": "projects/shell/webpack.config.js",
             "commonChunk": false
           },
@@ -97,7 +102,7 @@
               "projects/shell/src/assets"
             ],
             "styles": ["projects/shell/src/styles.scss"],
-            "scripts": [],
+            "scripts": ["projects/shell/src/assets/remotes-config-url.js"],
             "extraWebpackConfig": "projects/shell/webpack.config.js"
           }
         }
@@ -124,7 +129,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/remote/src/favicon.ico",
-              "projects/remote/src/assets"
+              "projects/remote/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/shared-lib/src/assets",
+                "output": "/assets/"
+              }
             ],
             "styles": ["projects/remote/src/styles.scss"],
             "scripts": [],
@@ -224,7 +234,12 @@
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/remote-two/src/favicon.ico",
-              "projects/remote-two/src/assets"
+              "projects/remote-two/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/shared-lib/src/assets",
+                "output": "/assets/"
+              }
             ],
             "styles": ["projects/remote-two/src/styles.scss"],
             "scripts": [],
@@ -299,6 +314,37 @@
             "styles": ["projects/remote-two/src/styles.scss"],
             "scripts": [],
             "extraWebpackConfig": "projects/remote-two/webpack.config.js"
+          }
+        }
+      }
+    },
+    "shared-lib": {
+      "projectType": "library",
+      "root": "projects/shared-lib",
+      "sourceRoot": "projects/shared-lib/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/shared-lib/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/shared-lib/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/shared-lib/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/shared-lib/src/test.ts",
+            "tsConfig": "projects/shared-lib/tsconfig.spec.json",
+            "karmaConfig": "projects/shared-lib/karma.conf.js"
           }
         }
       }
