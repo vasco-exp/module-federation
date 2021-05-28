@@ -10,3 +10,15 @@ figure {
   width: 400px;
   margin: 0;
 }
+
+.container-title,
+.container-username {
+  display: flex;
+  align-items: center;
+  h2 {
+    margin-right: 8px;
+  }
+  h4 {
+    margin-right: 4px;
+  }
+}

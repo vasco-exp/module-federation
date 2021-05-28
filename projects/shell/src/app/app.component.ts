@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from './services/session-service';
 import { Router } from '@angular/router';
-import { RemoteConfigService } from './services/remote-config-service';
-import { RemoteConfig } from './interfaces/remote-config.interface';
-import { Routes } from '@angular/router';
-import { loadRemoteModule } from '@angular-architects/module-federation';
+import { RemoteConfigService } from 'shared-lib';
+import { RemoteConfig } from 'shared-lib';
+import { SessionService } from 'shared-lib';
+import { RemoteConfigUrl } from 'shared-lib';
+import { environment } from '../environments/environment';
+
+declare const remotesConfigUrl: RemoteConfigUrl[];
 
 @Component({
   selector: 'app-root',
@@ -13,31 +15,36 @@ import { loadRemoteModule } from '@angular-architects/module-federation';
 })
 export class AppComponent implements OnInit {
   public remotesConfig: RemoteConfig[] = [];
+  public userName: any;
 
   constructor(
     public session: SessionService,
     private router: Router,
-    private remoteConfigServ: RemoteConfigService
+    private remoteConfServ: RemoteConfigService
   ) {}
 
   public async ngOnInit(): Promise<void> {
-    this.remotesConfig = await this.remoteConfigServ.loadAllRemotes();
-    const routes = this.buildRoutes(this.remotesConfig);
+    debugger;
+    this.remotesConfig = await this.remoteConfServ.loadAllRemotes(
+      remotesConfigUrl,
+      environment.production
+    );
+    debugger;
+    const routes = this.remoteConfServ.buildRoutes();
     this.router.resetConfig(routes);
   }
 
-  private buildRoutes(remotesConfig: RemoteConfig[]): Routes {
-    const lazyRoutes: Routes = remotesConfig.map((r) => ({
-      path: r.path,
-      loadChildren: () => loadRemoteModule(r).then((m) => m[r.ngModuleName]),
-    }));
-    return [...lazyRoutes];
+  public login(): void {
+    debugger;
+    if (this.userName) {
+      this.session.login(this.userName);
+    }
   }
 
-  public click(): void {
-    this.session.setSession(!this.session.isActive);
-    if (!this.session.isActive) {
-      this.router.navigate(['/']);
-    }
+  public logout(): void {
+    debugger;
+    this.session.logout();
+    this.router.navigate(['/']);
+    this.userName = '';
   }
 }

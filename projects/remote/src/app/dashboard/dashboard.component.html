@@ -1,5 +1,13 @@
 <div>
-  <h2>Vista Dashboard del proyecto remoto 1</h2>
+  <div class="container-title">
+    <h2>Vista Dashboard del proyecto remoto 1 -</h2>
+    <div class="container-username" *ngIf="session?.isActive">
+      <h4>Usuario Actual :</h4>
+      <span>
+        {{ session?.getUserName() }}
+      </span>
+    </div>
+  </div>
   <figure>
     <img src="/assets/imgs/dashboard1.png" />
   </figure>

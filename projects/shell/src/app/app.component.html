@@ -15,12 +15,16 @@
 </div>
 
 <div>
-  <button mat-button (click)="click()">
-    <ng-container *ngIf="session?.isActive; else logIn">
-      Cerrar sesión
-    </ng-container>
-    <ng-template #logIn> Loguearse </ng-template>
+  <button mat-button (click)="logout()" *ngIf="session?.isActive; else logIn">
+    <span>Cerrar sesión</span>
   </button>
+
+  <ng-template #logIn>
+    <button mat-button (click)="login()" class="btn-login">
+      <span>Loguearse</span>
+    </button>
+    <input type="text" placeholder="Nombre de usuario" [(ngModel)]="userName" />
+  </ng-template>
 </div>
 
 <main>
@@ -31,6 +35,7 @@
 
     <ng-template #loggedOut>
       <span>Sesión: inactiva</span>
+      <app-carousel></app-carousel>
     </ng-template>
   </h2>
 

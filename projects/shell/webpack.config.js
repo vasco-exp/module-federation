@@ -3,7 +3,9 @@ const mf = require("@angular-architects/module-federation/webpack");
 const path = require("path");
 
 const sharedMappings = new mf.SharedMappings();
-sharedMappings.register(path.join(__dirname, "../../tsconfig.json"), []);
+sharedMappings.register(path.join(__dirname, "../../tsconfig.json"), [
+  "shared-lib",
+]);
 
 module.exports = {
   output: {

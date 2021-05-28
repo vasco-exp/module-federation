@@ -1,29 +1,42 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { RemoteConfig } from '../interfaces/remote-config.interface';
-import { ResponseRemoteConfig } from '../interfaces/response-remote-config.interface';
-import { environment } from '../../environments/environment';
-import { RemoteConfigUrl } from '../interfaces/remote-config-url.interface';
-
-declare const remotesConfigUrl: RemoteConfigUrl[];
+import { RemoteConfig } from 'shared-lib';
+import { ResponseRemoteConfig } from 'shared-lib';
+import { RemoteConfigUrl } from 'shared-lib';
+import { Routes } from '@angular/router';
+import { loadRemoteModule } from '@angular-architects/module-federation';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RemoteConfigService {
   private remotesConfig: RemoteConfig[] = [];
+  private production: boolean = false;
+
   constructor(private http: HttpClient) {}
 
-  public async loadAllRemotes(): Promise<RemoteConfig[]> {
+  public async loadAllRemotes(
+    remotesConfigUrl: RemoteConfigUrl[],
+    production: boolean
+  ): Promise<RemoteConfig[]> {
+    this.production = production;
     return Promise.all(
       remotesConfigUrl.map((remote) => {
         return this.loadRemoteConfig(
-          environment.production ? remote.configUrlProd : remote.configUrlDev
+          production ? remote.configUrlProd : remote.configUrlDev
         );
       })
     ).then(() => {
       return this.remotesConfig;
     });
+  }
+
+  public buildRoutes(): Routes {
+    const lazyRoutes: Routes = this.remotesConfig.map((r) => ({
+      path: r.path,
+      loadChildren: () => loadRemoteModule(r).then((m) => m[r.ngModuleName]),
+    }));
+    return [...lazyRoutes];
   }
 
   public getRemotesConfigs(): RemoteConfig[] | Error {
@@ -47,7 +60,7 @@ export class RemoteConfigService {
               ngModuleName: moduleExposed.ngModuleName,
               displayName: moduleExposed.displayName,
               path: moduleExposed.path,
-              remoteEntry: environment.production
+              remoteEntry: this.production
                 ? resConfig.remoteEntryProd
                 : resConfig.remoteEntryDev,
             };
